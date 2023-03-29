@@ -17,10 +17,17 @@ async function callRaspberry()  {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.post('/start', (req, res) => {
-  console.log('Incoming Request Data:', req.body);
+app.get('/start', (req, res) => {
   shell.exec('./start.sh')
   res.sendStatus(200) 
+});
+
+app.get('/stop', (req, res) => {
+  data =shell.exec('./stop.sh')
+  // console.log(data);
+  // console.log("stopped");
+  data = data.slice(0, -2)
+  res.send(data) 
 });
 
 app.listen(8080, () => {
