@@ -1,11 +1,13 @@
 const express = require('express');
 const axios = require('axios');
-
+const cors = require('cors')
 const app = express();
 const port = 8080;
 
+
+app.use(cors()); 
 app.get('/start', (req, res) => {
-  axios.get('https://b80a-2401-4900-3604-ddc0-a89c-6f0b-c54e-d7f9.in.ngrok.io/start')
+  axios.get('https://ec2b-2401-4900-3604-ddc0-a89c-6f0b-c54e-d7f9.in.ngrok.io/start')
     .then(response => {
       res.send(response.data); // only send response data, not the entire response object
     })
@@ -16,7 +18,7 @@ app.get('/start', (req, res) => {
 });
 
 app.get('/stop', (req, res) => {
-  axios.get('https://b80a-2401-4900-3604-ddc0-a89c-6f0b-c54e-d7f9.in.ngrok.io/stop')
+  axios.get('https://ec2b-2401-4900-3604-ddc0-a89c-6f0b-c54e-d7f9.in.ngrok.io/stop')
     .then(response => {
       console.log(response.data);
       data=response.data.toString()
