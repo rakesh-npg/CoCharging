@@ -1,35 +1,33 @@
-// import axios from 'axios'
-const axios = require('axios');
-const shell = require('shelljs')
 const express = require('express');
+const axios = require('axios');
+
 const app = express();
-
-
-async function callRaspberry()  {
-  const response = await axios.get("localhost:8100")
-  return response 
-}
-
-
-// let data = req.body 
-// const response = callRaspberry() 
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const port = 8080;
 
 app.get('/start', (req, res) => {
-  shell.exec('./start.sh')
-  res.sendStatus(200) 
+  axios.get('https://b80a-2401-4900-3604-ddc0-a89c-6f0b-c54e-d7f9.in.ngrok.io/start')
+    .then(response => {
+      res.send(response.data); // only send response data, not the entire response object
+    })
+    .catch(error => {
+      console.error(error);
+      res.status(500).send('Error occurred while making request to start');
+    });
 });
 
 app.get('/stop', (req, res) => {
-  data =shell.exec('./stop.sh')
-  // console.log(data);
-  // console.log("stopped");
-  data = data.slice(0, -2)
-  res.send(data) 
+  axios.get('https://b80a-2401-4900-3604-ddc0-a89c-6f0b-c54e-d7f9.in.ngrok.io/stop')
+    .then(response => {
+      console.log(response.data);
+      data=response.data.toString()
+      res.status(200).send(data);//.send(response.data);
+    })
+    .catch(error => {
+      console.error(error);
+      res.send(500).send('Error occurred while making request to stop');
+    });
 });
 
-app.listen(8080, () => {
-  console.log('Server running on port 8080');
+app.listen(port, () => {
+  console.log(`Server listening at http://localhost:${port}`);
 });
